@@ -8,7 +8,7 @@ import java.io.IOException;
  * GPIO control class
  *
  * @author MarkB - m0x23
- * @version 0.1
+ * @version 0.2
  */
 public class MGpio
 {
@@ -57,6 +57,56 @@ public class MGpio
     }
 
     /**
+     * @return gpio port
+     */
+    public String getGpioPort()
+    {
+        return this.gpioPort;
+    }
+
+    /**
+     * Gets the current gpio direction
+     *
+     * @return current direction
+     */
+    public String getGpioDirection()
+    {
+        return this.gpioDirection;
+    }
+
+    /**
+     * Sets a new gpio direction
+     *
+     * @param direction gpio direction
+     */
+    public void setGpioDirection(String direction)
+    {
+        try
+        {
+            FileWriter gpioDirectionWriter;
+            gpioDirectionWriter = new FileWriter(this.gpioDirectionPath);
+            this.gpioDirection = direction;
+            gpioDirectionWriter.write(this.gpioDirection);
+            gpioDirectionWriter.close();
+        }
+        catch (IOException ex)
+        {
+            System.out.println("setGpioDirection(): file not found: ");
+            System.out.println(this.gpioDirectionPath);
+        }
+    }
+
+    /**
+     * Gets the current gpio value
+     *
+     * @return current value
+     */
+    public String getGpioValue()
+    {
+        return this.gpioValue;
+    }
+
+    /**
      * Sets a new gpio value
      *
      * @param val gpio value
@@ -76,56 +126,6 @@ public class MGpio
             System.out.println("setGpioValue(): file not found:");
             System.out.println(this.gpioValuePath);
         }
-    }
-
-    /**
-     * Sets a new gpio direction
-     *
-     * @param direc gpio direction
-     */
-    public void setGpioDirection(String direc)
-    {
-        try
-        {
-            FileWriter gpioDirectionWriter;
-            gpioDirectionWriter = new FileWriter(this.gpioDirectionPath);
-            this.gpioDirection = direc;
-            gpioDirectionWriter.write(this.gpioDirection);
-            gpioDirectionWriter.close();
-        }
-        catch (IOException ex)
-        {
-            System.out.println("setGpioDirection(): file not found: ");
-            System.out.println(this.gpioDirectionPath);
-        }
-    }
-
-    /**
-     * @return gpio port
-     */
-    public String getGpioPort()
-    {
-        return this.gpioPort;
-    }
-
-    /**
-     * Gets the current gpio direction
-     *
-     * @return current direction
-     */
-    public String getGpioDirection()
-    {
-        return this.gpioDirection;
-    }
-
-    /**
-     * Gets the current gpio value
-     *
-     * @return current value
-     */
-    public String getGpioValue()
-    {
-        return this.gpioValue;
     }
 
     /**
