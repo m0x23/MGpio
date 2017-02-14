@@ -1,31 +1,26 @@
 package MGpio;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Scanner;
 
 /**
  * GPIO control class
  *
- * @author markb
+ * @author MarkB - m0x23
  * @version 0.1
  */
 public class MGpio
 {
-
-    private String gpioName;
+    private String gpioPort;
+    private String gpioDirection;
+    private String gpioValue;
+    private String gpioFolderName;
     private String gpioDirectionPath;
     private String gpioValuePath;
-    private String gpioDirection;
-    private String gpioPort;
-    private String gpioValue;
 
     /**
-     * Exports the given port to Raspberry Pi
+     * Exports the given port to Raspberry Pi GPIO board
      * Direction must be set after object init setGpioDirection(String)
      *
      * @param port port number
@@ -33,9 +28,9 @@ public class MGpio
     MGpio(String port)
     {
         this.gpioPort = port;
-        this.gpioName = "gpio" + this.gpioPort;
-        this.gpioDirectionPath = "/sys/class/gpio/" + gpioName + "/direction";
-        this.gpioValuePath = "/sys/class/gpio/" + gpioName + "/value";
+        this.gpioFolderName = "gpio" + this.gpioPort;
+        this.gpioDirectionPath = "/sys/class/gpio/" + gpioFolderName + "/direction";
+        this.gpioValuePath = "/sys/class/gpio/" + gpioFolderName + "/value";
 
         FileWriter gpioExport;
         FileWriter gpioUnexport;
@@ -57,39 +52,8 @@ public class MGpio
         }
         catch (IOException ex)
         {
-            System.out.println("Export/Unexport Datei nicht gefunden");
+            System.out.println("export/unexport file not found");
         }
-    }
-
-    /**
-     * Gets the current gpio value
-     * Returns String "-1" when failed
-     *
-     * @return Current value
-     */
-    public String getGpioValue()
-    {
-        /*
-        File f = new File(this.gpioValuePath);
-        InputStream is = null;
-        try {
-
-            is = new FileInputStream(f);
-            Scanner scanner = new Scanner(is, "UTF-8");
-            while (scanner.hasNext())
-                {
-                        String line = scanner.nextLine();
-                        return line;
-                }
-        }
-        catch (FileNotFoundException ex)
-        {
-            System.out.println("getGpioValue(): Datei nicht gefunden:");
-            System.out.println(this.gpioValuePath);
-        }
-        return "-1";
-        */
-        return this.gpioValue;
     }
 
     /**
@@ -101,45 +65,17 @@ public class MGpio
     {
         try
         {
+            FileWriter fw;
+            fw = new FileWriter(gpioValuePath);
             this.gpioValue = val;
-            FileWriter fw = new FileWriter(gpioValuePath);
             fw.write(this.gpioValue);
             fw.close();
         }
         catch (IOException ex)
         {
-            System.out.println("setGpioValue(): Datei nicht gefunden:");
+            System.out.println("setGpioValue(): file not found:");
             System.out.println(this.gpioValuePath);
         }
-    }
-
-    /**
-     * Gets the current gpio direction
-     * Returns String "-1" when failed
-     *
-     * @return Current direction
-     */
-    public String getGpioDirection()
-    {
-        File f = new File(this.gpioDirectionPath);
-        InputStream is = null;
-        try
-        {
-
-            is = new FileInputStream(f);
-            Scanner scanner = new Scanner(is, "UTF-8");
-            while (scanner.hasNext())
-            {
-                String line = scanner.nextLine();
-                return line;
-            }
-        }
-        catch (FileNotFoundException ex)
-        {
-            System.out.println("getGpioDirection(): Datei nicht gefunden");
-            System.out.println(this.gpioDirectionPath);
-        }
-        return "-1";
     }
 
     /**
@@ -151,28 +87,68 @@ public class MGpio
     {
         try
         {
-            this.gpioDirection = direc;
             FileWriter gpioDirectionWriter;
             gpioDirectionWriter = new FileWriter(this.gpioDirectionPath);
+            this.gpioDirection = direc;
             gpioDirectionWriter.write(this.gpioDirection);
             gpioDirectionWriter.close();
         }
         catch (IOException ex)
         {
-            System.out.println("setGpioDirection(): Datei nicht gefunden: ");
+            System.out.println("setGpioDirection(): file not found: ");
             System.out.println(this.gpioDirectionPath);
         }
     }
 
+    /**
+     * @return gpio port
+     */
     public String getGpioPort()
     {
         return this.gpioPort;
     }
 
-    public String getGpioName()
+    /**
+     * Gets the current gpio direction
+     *
+     * @return current direction
+     */
+    public String getGpioDirection()
     {
-        return this.gpioName;
+        return this.gpioDirection;
     }
 
+    /**
+     * Gets the current gpio value
+     *
+     * @return current value
+     */
+    public String getGpioValue()
+    {
+        return this.gpioValue;
+    }
 
+    /**
+     * @return gpio folder name
+     */
+    public String getGpioFolderName()
+    {
+        return this.gpioFolderName;
+    }
+
+    /**
+     * @return gpio direction path
+     */
+    public String getGpioDirectionPath()
+    {
+        return this.gpioDirectionPath;
+    }
+
+    /**
+     * @return gpio value path
+     */
+    public String getGpioValuePath()
+    {
+        return this.gpioValuePath;
+    }
 }

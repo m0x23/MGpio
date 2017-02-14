@@ -11,13 +11,14 @@ public class MGpioTest
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+
         try 
         {
             MGpio gpio17;
             gpio17 = new MGpio("17");    
             gpio17.setGpioDirection("out");
-            while(true)
+            //LED on Gpio 17 blinks 10 times
+            for(int i = 0; i<10; i++)
             {
                 gpio17.setGpioValue("1");
                 Thread.sleep(100);
