@@ -8,7 +8,7 @@ import java.io.IOException;
  * GPIO control class
  *
  * @author MarkB - m0x23
- * @version 0.1
+ * @version 0.2
  */
 public class MGpio
 {
@@ -59,7 +59,7 @@ public class MGpio
     /**
      * Unexports the current port and exports the new given port
      *
-     * @param port new port number
+     * @param newPort new port number
      */
     public void reInit(String newPort)
     {
